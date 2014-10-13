@@ -26,8 +26,12 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">=1.9.3"
 
-  spec.add_development_dependency("minitest", "~>5.4")
-  spec.add_development_dependency("rake",     "~>10.3")
+  spec.add_development_dependency("guard",          "~>2.6")
+  spec.add_development_dependency("guard-minitest", "~>2.3")
+  spec.add_development_dependency("guard-yard",     "~>2.1")
+  spec.add_development_dependency("minitest",       "~>5.4")
+  spec.add_development_dependency("mocha",          "~>1.1")
+  spec.add_development_dependency("rake",           "~>10.3")
 
   spec.files        = Dir.glob("lib/**/*.rb")
   spec.test_files   = Dir.glob("test/**/*.rb")
