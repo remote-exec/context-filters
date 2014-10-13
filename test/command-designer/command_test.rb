@@ -20,7 +20,7 @@ describe CommandDesigner::Command do
 
   it "builds and resets the command" do
     subject.send(:initialize, "true")
-    subject.with {|command| "env #{command}"}
+    subject.change {|command| "env #{command}"}
     subject.command_name.must_equal("env true")
     subject.reset
     subject.command_name.must_equal("true")
