@@ -10,6 +10,10 @@ require "command-designer/version"
 #
 # @example
 #
+#   command = CommandDesigner::Command.new("test")
+#   command.change {|command| "env #{command}" }
+#   command.command_name # => "env test"
+#
 class CommandDesigner::Command
 
   # @return [String] current value of the command
