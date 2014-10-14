@@ -7,6 +7,29 @@ See the file LICENSE for copying permission.
 require "command-designer/version"
 
 # Store and apply filters using blocks
+#
+# @example
+#
+#   class FiltersTestSubject
+#     attr_reader :value
+#     def initialize(value)
+#       @value = value
+#     end
+#     def change(&block)
+#       @value = block.call(@value)
+#     end
+#   end
+#   filters = CommandDesigner::Filters.new
+#   filters.store(:addition) {|value| value + 1 }
+#   filters.store(:subtraction) {|value| value - 1 }
+#   filters.filters # => [:addition, :subtraction]
+#   object = FiltersTestSubject.new(3)
+#   object.value => 3
+#   filters.apply(object.method(:change), :addition)
+#   object.value => 4
+#   filters.apply(object.method(:change), :subtraction)
+#   object.value => 3
+
 class CommandDesigner::Filters
 
   # initialize the filters hash
