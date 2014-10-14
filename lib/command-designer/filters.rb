@@ -42,7 +42,7 @@ class CommandDesigner::Filters
   # @param options [Hash,nil] options for filtering blocks
   # @param block   [Proc]     block of code to add to the list of blocks
   #                           for this options
-  def store(options = {}, &block)
+  def store(options = nil, &block)
     @filters[options] ||= []
     @filters[options] << block
   end

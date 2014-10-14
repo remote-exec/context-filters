@@ -28,7 +28,7 @@ describe CommandDesigner::Filters do
     it "adds empty filter" do
       subject.store() { true }
       subject.filters.size.must_equal 1
-      subject.filters.first.must_equal({})
+      subject.filters.first.must_equal(nil)
     end
 
     it "adds options filter" do
@@ -53,8 +53,8 @@ describe CommandDesigner::Filters do
       subject.store() { 4 }
       filters = subject.instance_variable_get(:@filters)
       filters.size.must_equal 1
-      filters[{}].size.must_equal 1
-      filters[{}].first.call.must_equal(4)
+      filters[nil].size.must_equal 1
+      filters[nil].first.call.must_equal(4)
     end
 
   end #store

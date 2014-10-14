@@ -9,8 +9,8 @@ require "command-designer/filters"
 
 class CommandDesigner::CommandSet
 
-  attr_reader commands
-  attr_reader filters
+  attr_reader :commands
+  attr_reader :filters
 
   def initialize
     @commands = {}
