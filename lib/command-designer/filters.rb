@@ -6,25 +6,24 @@ See the file LICENSE for copying permission.
 
 require "command-designer/version"
 
+# Store and apply filters using blocks
 class CommandDesigner::Filters
 
   # @api private
+  # @return [Hash<Hash,[Proc...]>] stores array of blocks for filter
   attr_reader :filters
 
   def initialize
-    @filters = []
+    @filters = {}
   end
 
-  def filter(options = {}, &block)
-    @filters << [ options, block ]
+  def store(options = {}, &block)
+    @filters[options] ||= []
+    @filters[options] << block
   end
 
   def apply(method, options = {})
-    select_filters(options).each{|filter, block| method.call(&block) }
-  end
-
-  def select_filters(options)
-    @filters.select { |filter, block| filter == options }
+    @filters.fetch(options, []).each{|block| method.call(&block) }
   end
 
 end
