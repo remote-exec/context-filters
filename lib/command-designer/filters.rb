@@ -8,16 +8,19 @@ require "command-designer/version"
 
 class CommandDesigner::Filters
 
+  # @api private
+  attr_reader :filters
+
   def initialize
     @filters = []
   end
 
   def filter(options = {}, &block)
-    @filters << [ options, &block ]
+    @filters << [ options, block ]
   end
 
-  def apply(object, method, options = {})
-    select_filters(options).each{|filter, block| method.call(block) }
+  def apply(method, options = {})
+    select_filters(options).each{|filter, block| method.call(&block) }
   end
 
   def select_filters(options)
