@@ -8,7 +8,7 @@ require "command-designer/version"
 
 class CommandDesigner::Filters
 
-  class Filter < Struct(:type, :name, :target, :priority, :transformation)
+  class Filter < Struct.new(:type, :name, :target, :priority, :transformation)
 
     def self.from_hash(options, &block)
       self.new(
@@ -17,8 +17,8 @@ class CommandDesigner::Filters
     end
 
     def same(options)
-      [ self.priority, self.type, self.name, self.target ] ==
-      [ options[:priority], options[:type], options[:name], options[:target] ]
+      [ self.type, self.name, self.target, self.priority ] ==
+      [ options[:type], options[:name], options[:target], options[:priority] ]
     end
 
   end
