@@ -23,40 +23,41 @@ describe CommandDesigner::Filters do
     CommandDesigner::Filters.new
   end
 
-  describe "#filter" do
+  describe "#store" do
 
     it "adds empty filter" do
       subject.store() { true }
       subject.filters.size.must_equal 1
-      subject.filters.first.first.must_equal({})
+      subject.filters.first.must_equal({})
     end
 
     it "adds options filter" do
       subject.store(x: 2) { true }
       subject.filters.size.must_equal 1
-      subject.filters.first.first.must_equal({x:2})
+      subject.filters.first.must_equal({x:2})
     end
 
     it "adds hash filter" do
       subject.store({x: 3}) { true }
       subject.filters.size.must_equal 1
-      subject.filters.first.first.must_equal({x:3})
+      subject.filters.first.must_equal({x:3})
     end
 
     it "adds nil filter" do
       subject.store(nil) { true }
       subject.filters.size.must_equal 1
-      subject.filters.first.first.must_equal(nil)
+      subject.filters.first.must_equal(nil)
     end
 
     it "adds filter block" do
       subject.store() { 4 }
-      subject.filters.size.must_equal 1
-      subject.filters[{}].size.must_equal 1
-      subject.filters[{}].first.call.must_equal(4)
+      filters = subject.instance_variable_get(:@filters)
+      filters.size.must_equal 1
+      filters[{}].size.must_equal 1
+      filters[{}].first.call.must_equal(4)
     end
 
-  end #filter
+  end #store
 
   describe "#apply" do
 
