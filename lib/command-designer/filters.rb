@@ -32,7 +32,7 @@ require "command-designer/version"
 
 class CommandDesigner::Filters
 
-  # initialize the filters hash
+  # initialize the filters storage
   def initialize
     @filters = {}
   end

@@ -7,6 +7,9 @@ See the file LICENSE for copying permission.
 require "command-designer/version"
 
 # A concpet of command that can be extended multiple times
+#
+# @example
+#
 class CommandDesigner::Command
 
   # @return [String] current value of the command
@@ -15,7 +18,7 @@ class CommandDesigner::Command
   # @return [String] initial value of the command
   attr_reader :initial_command_name
 
-  # Set up the instance
+  # initialize command and initila command name
   # @param command_name [String] The command name to build upon
   def initialize(command_name)
     @command_name = command_name
@@ -27,7 +30,7 @@ class CommandDesigner::Command
     @command_name = @initial_command_name
   end
 
-  # Yields a block to change the command
+  # Yields a block to change the command_name
   # @yields     [command_name] a block to change the command
   # @yieldparam command_name [String] the current command
   # @return     [String] the new command
