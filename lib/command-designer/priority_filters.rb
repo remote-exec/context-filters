@@ -40,7 +40,7 @@ class CommandDesigner::PriorityFilters
   # @yieldparam priority [Object]  the priority
   # @yieldparam filters  [Filters] the filters for priority
   def each(&block)
-    to_a.each(&block)
+    to_a.each(&block) unless empty?
   end
 
   # check if all of the filters are empty
