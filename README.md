@@ -10,3 +10,21 @@
 [![Github Code](http://img.shields.io/badge/github-code-blue.svg)](https://github.com/remote-exec/context-filters)
 
 Generic support for filters applied in context
+
+## About
+
+This is a set of classes (framework) to build context aware filtering
+system, allows:
+
+1. nested context
+2. global filters applied depending on context
+3. local filters applied in given scope
+4. priority based applying of global filters with mixed in local filtering
+5. no assumptions in the usage or context/filter format
+
+## Filters
+
+`CommandDesigner::Filters` allows storing and applying filters,
+the filters can be anything, most convienient an object instance or
+hash of options.
+
