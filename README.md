@@ -60,6 +60,10 @@ class FilterTestSubject
 end
 ```
 
+The method does not have to be called change, you can use any number of
+attributes (`@a1, @a2... = block.call(@a1, @a2...)`) or pass `self`
+(`block.call(self)`).
+
 Now the real example:
 
 ```ruby
