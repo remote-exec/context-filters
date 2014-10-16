@@ -45,4 +45,28 @@ describe CommandDesigner::Context do
 
   end #evaluate_command
 
+  describe "#group" do
+
+    it "nests" do
+      subject.group(:a) do |test_a|
+
+        test_a.must_be_kind_of CommandDesigner::Context
+        test_a.filters.object_id.must_equal(subject.filters.object_id)
+        test_a.context.object_id.wont_equal(subject.context.object_id)
+        test_a.context.must_equal([nil, :a])
+
+        test_a.group(:b) do |test_b|
+          test_b.must_be_kind_of CommandDesigner::Context
+          test_b.filters.object_id.must_equal(test_a.filters.object_id)
+          test_b.context.object_id.wont_equal(test_a.context.object_id)
+          test_b.context.must_equal([nil, :a, :b])
+        end
+
+        test_a.context.must_equal([nil, :a])
+      end
+      subject.context.must_equal([nil])
+    end
+
+  end #group
+
 end

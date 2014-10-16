@@ -21,7 +21,7 @@ class CommandDesigner::Context
   end
 
   def group(options, &block)
-    self.class.new(@filters, @context, options).tap(block)
+    self.class.new(@filters, @context, options).tap(&block)
   end
 
   def evaluate_filters(method)
