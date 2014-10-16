@@ -7,13 +7,17 @@ See the file LICENSE for copying permission.
 require "command-designer/global_context"
 require "command-designer/local_context"
 
+# manipulate set of context and filters for it,
+# allow evaluating filters in given context
 class CommandDesigner::Context < CommandDesigner::GlobalContext
 
   include CommandDesigner::LocalContext
 
+  #
   def evaluate_filters(method)
-    super(method)
-    evaluate_local_filters(method)
+    super(method) do
+      evaluate_local_filters(method)
+    end
   end
 
 end

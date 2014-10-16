@@ -14,6 +14,12 @@ module CommandDesigner::LocalContext
     @local_filters ||= []
   end
 
+  # temporarly adds +filter_block+ to the list of filters to run and
+  # yields given block of code
+  #
+  # @param filter_block [Proc] a block of code to add to the list
+  # @yields a block in which +local_filters+ temporarly includes
+  #         +filter_block+
   def local_filter(filter_block, &block)
     local_filters.push(filter_block)
     block.call
@@ -22,6 +28,10 @@ module CommandDesigner::LocalContext
     nil
   end
 
+  # iterates over +local_filters+ and applies them to the given +method+
+  #
+  # @param method [Proc] a method to call with each filter stored in
+  #                      +local_filters+
   def evaluate_local_filters(method)
     local_filters.each { |block| method.call(&block) }
   end

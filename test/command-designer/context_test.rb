@@ -45,12 +45,15 @@ describe CommandDesigner::Context do
     end
 
     it "does apple global and local filters" do
+      filter_test_subject.value.must_equal(3)
       addition       = Proc.new { |value| value+1 }
       multiplication = Proc.new { |value| value*3 }
+
       subject.filter(&multiplication)
       subject.local_filter(addition) do
         subject.evaluate_filters(change_method)
       end
+
       filter_test_subject.value.must_equal(10)
     end
 

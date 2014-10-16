@@ -28,6 +28,7 @@ class CommandDesigner::GlobalContext
     @context.each do |options|
       @filters.apply(method, options)
     end unless @filters.empty?
+    yield if block_given?
   end
 
 end

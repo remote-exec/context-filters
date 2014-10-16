@@ -5,7 +5,7 @@ See the file LICENSE for copying permission.
 =end
 
 class FilterTestSubject
-  attr_reader :value
+  attr_accessor :value
   def initialize(value)
     @value = value
   end
