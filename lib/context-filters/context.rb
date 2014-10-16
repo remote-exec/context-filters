@@ -4,14 +4,14 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "command-designer/global_context"
-require "command-designer/local_context"
+require "context-filters/global_context"
+require "context-filters/local_context"
 
 # manipulate set of context and filters for it,
 # allow evaluating filters in given context
-class CommandDesigner::Context < CommandDesigner::GlobalContext
+class ContextFilters::Context < CommandDesigner::GlobalContext
 
-  include CommandDesigner::LocalContext
+  include ContextFilters::LocalContext
 
   # run the given method on global and local filters
   def evaluate_filters(method)

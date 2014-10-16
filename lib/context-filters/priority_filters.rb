@@ -4,10 +4,10 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "command-designer/filters"
+require "context-filters/filters"
 
 # list of +filters+ sorted by +priorities+
-class CommandDesigner::PriorityFilters
+class ContextFilters::PriorityFilters
 
   attr_reader :priorities
 
@@ -15,7 +15,7 @@ class CommandDesigner::PriorityFilters
   # @param priorities [Array|Object] a list of priorities to order filters
   def initialize(priorities = nil)
     @priorities = [priorities].flatten.freeze
-    @filters_array = @priorities.product([CommandDesigner::Filters.new])
+    @filters_array = @priorities.product([ContextFilters::Filters.new])
   end
 
   # adds a priority filter

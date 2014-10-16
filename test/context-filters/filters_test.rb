@@ -5,13 +5,13 @@ See the file LICENSE for copying permission.
 =end
 
 require "test_helper"
-require "command-designer/filters"
-require "command-designer/filter_test_subject"
+require "context-filters/filters"
+require "context-filters/filter_test_subject"
 
-describe CommandDesigner::Filters do
+describe ContextFilters::Filters do
 
   subject do
-    CommandDesigner::Filters.new
+    ContextFilters::Filters.new
   end
 
   describe "#store" do

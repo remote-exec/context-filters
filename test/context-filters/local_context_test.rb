@@ -5,13 +5,13 @@ See the file LICENSE for copying permission.
 =end
 
 require "test_helper"
-require "command-designer/local_context"
-require "command-designer/filter_test_subject"
+require "context-filters/local_context"
+require "context-filters/filter_test_subject"
 
-describe CommandDesigner::LocalContext do
+describe ContextFilters::LocalContext do
 
   subject do
-    Object.new.tap { |o| o.extend(CommandDesigner::LocalContext) }
+    Object.new.tap { |o| o.extend(ContextFilters::LocalContext) }
   end
 
   let(:filter_test_subject) do

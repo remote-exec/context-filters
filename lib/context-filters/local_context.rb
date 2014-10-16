@@ -4,10 +4,10 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "command-designer/version"
+require "context-filters/version"
 
 # allow defining local filters and evaluating code in context of thems
-module CommandDesigner::LocalContext
+module ContextFilters::LocalContext
 
   # @return [Array<Proc>] list of blocks to evaluate
   def local_filters

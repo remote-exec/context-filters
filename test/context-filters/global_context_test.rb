@@ -5,18 +5,18 @@ See the file LICENSE for copying permission.
 =end
 
 require "test_helper"
-require "command-designer/global_context"
+require "context-filters/global_context"
 
-describe CommandDesigner::GlobalContext do
+describe ContextFilters::GlobalContext do
 
   subject do
-    CommandDesigner::GlobalContext.new
+    ContextFilters::GlobalContext.new
   end
 
   describe "#initialize" do
 
     it "sets up initial variables" do
-      subject.priority_filters.must_be_kind_of CommandDesigner::PriorityFilters
+      subject.priority_filters.must_be_kind_of ContextFilters::PriorityFilters
       subject.priority_filters.must_be_empty
       subject.context.must_equal([nil])
     end
@@ -51,13 +51,13 @@ describe CommandDesigner::GlobalContext do
     it "nests" do
       subject.in_context(:a) do |test_a|
 
-        test_a.must_be_kind_of CommandDesigner::GlobalContext
+        test_a.must_be_kind_of ContextFilters::GlobalContext
         test_a.priority_filters.object_id.must_equal(subject.priority_filters.object_id)
         test_a.context.object_id.wont_equal(subject.context.object_id)
         test_a.context.must_equal([nil, :a])
 
         test_a.in_context(:b) do |test_b|
-          test_b.must_be_kind_of CommandDesigner::GlobalContext
+          test_b.must_be_kind_of ContextFilters::GlobalContext
           test_b.priority_filters.object_id.must_equal(test_a.priority_filters.object_id)
           test_b.context.object_id.wont_equal(test_a.context.object_id)
           test_b.context.must_equal([nil, :a, :b])

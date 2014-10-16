@@ -4,11 +4,11 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "command-designer/priority_filters"
+require "context-filters/priority_filters"
 
 # builds list of filters and provides dsl for building nested context
 # and allows evaluating filters on methods in the current context
-class CommandDesigner::GlobalContext
+class ContextFilters::GlobalContext
 
   # @return [Array] the context stack
   attr_reader :context
@@ -28,9 +28,9 @@ class CommandDesigner::GlobalContext
   # @param options [Object] new context, ads it to current context
   #
   def initialize(priority_filters = nil, context = [], options = nil)
-    if CommandDesigner::PriorityFilters === priority_filters
+    if ContextFilters::PriorityFilters === priority_filters
     then @priority_filters = priority_filters
-    else @priority_filters = CommandDesigner::PriorityFilters.new(priority_filters)
+    else @priority_filters = ContextFilters::PriorityFilters.new(priority_filters)
     end
     @context = context.dup + [options]
   end

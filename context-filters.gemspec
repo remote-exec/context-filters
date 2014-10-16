@@ -11,18 +11,18 @@ See the file LICENSE for copying permission.
 lib = File.expand_path("../lib/", __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
-require "command-designer/version"
+require "context-filters/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "command-designer"
-  spec.version     = ::CommandDesigner::VERSION
+  spec.name        = "context-filters"
+  spec.version     = ::ContextFilters::VERSION
   spec.licenses    = ["MIT"]
 
   spec.authors     = ["Michal Papis"]
   spec.email       = ["mpapis@gmail.com"]
 
-  spec.homepage    = "https://github.com/remote-exec/command-designer"
-  spec.summary     = "Build command text based on multiple filters"
+  spec.homepage    = "https://github.com/remote-exec/context-filters"
+  spec.summary     = "Generic support for filters applied in context"
 
   spec.required_ruby_version = ">=1.9.3"
 

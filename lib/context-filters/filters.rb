@@ -4,7 +4,7 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "command-designer/version"
+require "context-filters/version"
 
 # Store and apply filters using blocks
 #
@@ -19,7 +19,7 @@ require "command-designer/version"
 #       @value = block.call(@value)
 #     end
 #   end
-#   filters = CommandDesigner::Filters.new
+#   filters = ContextFilters::Filters.new
 #   filters.store(:addition) {|value| value + 1 }
 #   filters.store(:subtraction) {|value| value - 1 }
 #   filters.filters # => [:addition, :subtraction]
@@ -30,7 +30,7 @@ require "command-designer/version"
 #   filters.apply(object.method(:change), :subtraction)
 #   object.value => 3
 
-class CommandDesigner::Filters
+class ContextFilters::Filters
 
   # initialize the filters storage
   def initialize
