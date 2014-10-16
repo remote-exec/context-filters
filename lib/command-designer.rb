@@ -7,4 +7,4 @@ See the file LICENSE for copying permission.
 require "command-designer/version"
 require "command-designer/command"
 require "command-designer/filters"
-require "command-designer/command_set"
+require "command-designer/dsl"

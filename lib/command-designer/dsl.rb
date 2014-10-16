@@ -7,14 +7,6 @@ See the file LICENSE for copying permission.
 require "command-designer/command"
 require "command-designer/filters"
 
-class CommandDesigner::CommandSet
-
-  attr_reader :commands
-  attr_reader :filters
-
-  def initialize
-    @commands = {}
-    @filters  = CommandDesigner::Filters.new
-  end
+class CommandDesigner::Dsl
 
 end
