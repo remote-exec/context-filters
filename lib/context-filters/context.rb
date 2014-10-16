@@ -9,7 +9,7 @@ require "context-filters/local_context"
 
 # manipulate set of context and filters for it,
 # allow evaluating filters in given context
-class ContextFilters::Context < CommandDesigner::GlobalContext
+class ContextFilters::Context < ContextFilters::GlobalContext
 
   include ContextFilters::LocalContext
 
