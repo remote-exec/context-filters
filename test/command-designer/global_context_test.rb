@@ -16,31 +16,31 @@ describe CommandDesigner::GlobalContext do
   describe "#initialize" do
 
     it "sets up initial variables" do
-      subject.filters.must_be_kind_of CommandDesigner::Filters
-      subject.filters.must_be_empty
+      subject.priority_filters.must_be_kind_of CommandDesigner::PriorityFilters
+      subject.priority_filters.must_be_empty
       subject.context.must_equal([nil])
     end
 
   end #initialize
 
   it "stores filters" do
-    subject.filters.expects(:store).with(:a).once
-    subject.filter(:a) do true end
+    subject.priority_filters.expects(:store).with(nil, :a).once
+    subject.filter(nil, :a) do true end
   end
 
   describe "#evaluate_filters" do
 
     it "does not apply filters when no filters" do
-      subject.filters.expects(:apply).never
+      subject.priority_filters.expects(:apply).never
       subject.evaluate_filters(Proc.new{})
     end
 
     it "does apply filters" do
       method = Proc.new{}
       subject.context << :a
-      subject.filter(:b) { true }
-      subject.filters.expects(:apply).once.with(method, nil)
-      subject.filters.expects(:apply).once.with(method, :a)
+      subject.filter(nil, :b) { true }
+      subject.priority_filters.filters_hash.fetch(nil).expects(:apply).once.with(method, nil)
+      subject.priority_filters.filters_hash.fetch(nil).expects(:apply).once.with(method, :a)
       subject.evaluate_filters(method)
     end
 
@@ -52,13 +52,13 @@ describe CommandDesigner::GlobalContext do
       subject.in_context(:a) do |test_a|
 
         test_a.must_be_kind_of CommandDesigner::GlobalContext
-        test_a.filters.object_id.must_equal(subject.filters.object_id)
+        test_a.priority_filters.object_id.must_equal(subject.priority_filters.object_id)
         test_a.context.object_id.wont_equal(subject.context.object_id)
         test_a.context.must_equal([nil, :a])
 
         test_a.in_context(:b) do |test_b|
           test_b.must_be_kind_of CommandDesigner::GlobalContext
-          test_b.filters.object_id.must_equal(test_a.filters.object_id)
+          test_b.priority_filters.object_id.must_equal(test_a.priority_filters.object_id)
           test_b.context.object_id.wont_equal(test_a.context.object_id)
           test_b.context.must_equal([nil, :a, :b])
         end

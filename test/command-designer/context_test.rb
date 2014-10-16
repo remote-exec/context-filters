@@ -25,16 +25,16 @@ describe CommandDesigner::Context do
   describe "#evaluate_filters" do
 
     it "does not apply filters when no filters" do
-      subject.filters.expects(:apply).never
+      subject.priority_filters.expects(:apply).never
       subject.evaluate_filters(Proc.new{})
     end
 
     it "does apply global filters" do
       method = Proc.new{}
       subject.context << :a
-      subject.filter(:b) { true }
-      subject.filters.expects(:apply).once.with(method, nil)
-      subject.filters.expects(:apply).once.with(method, :a)
+      subject.filter(nil, :b) { true }
+      subject.priority_filters.filters_hash.fetch(nil).expects(:apply).once.with(method, nil)
+      subject.priority_filters.filters_hash.fetch(nil).expects(:apply).once.with(method, :a)
       subject.evaluate_filters(method)
     end
 
@@ -49,7 +49,7 @@ describe CommandDesigner::Context do
       addition       = Proc.new { |value| value+1 }
       multiplication = Proc.new { |value| value*3 }
 
-      subject.filter(&multiplication)
+      subject.filter(nil,&multiplication)
       subject.local_filter(addition) do
         subject.evaluate_filters(change_method)
       end

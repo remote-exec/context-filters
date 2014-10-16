@@ -19,13 +19,13 @@ describe CommandDesigner::Dsl do
     end
 
     it "handles filtered commands" do
-      subject.filter do |command| "env #{command}" end
+      subject.filter(nil) do |command| "env #{command}" end
       subject.command("true").must_equal("env true")
       subject.command("false").must_equal("env false")
     end
 
     it "does not filter commands that are not in context" do
-      subject.filter(:commands) do |command| "command #{command}" end
+      subject.filter(nil, :commands) do |command| "command #{command}" end
       subject.command("true").must_equal("true")
     end
 
