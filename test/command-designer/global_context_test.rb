@@ -49,14 +49,14 @@ describe CommandDesigner::GlobalContext do
   describe "#group" do
 
     it "nests" do
-      subject.group(:a) do |test_a|
+      subject.in_context(:a) do |test_a|
 
         test_a.must_be_kind_of CommandDesigner::GlobalContext
         test_a.filters.object_id.must_equal(subject.filters.object_id)
         test_a.context.object_id.wont_equal(subject.context.object_id)
         test_a.context.must_equal([nil, :a])
 
-        test_a.group(:b) do |test_b|
+        test_a.in_context(:b) do |test_b|
           test_b.must_be_kind_of CommandDesigner::GlobalContext
           test_b.filters.object_id.must_equal(test_a.filters.object_id)
           test_b.context.object_id.wont_equal(test_a.context.object_id)

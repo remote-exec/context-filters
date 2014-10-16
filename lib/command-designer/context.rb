@@ -13,7 +13,7 @@ class CommandDesigner::Context < CommandDesigner::GlobalContext
 
   include CommandDesigner::LocalContext
 
-  #
+  # run the given method on global and local filters
   def evaluate_filters(method)
     super(method) do
       evaluate_local_filters(method)

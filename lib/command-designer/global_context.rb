@@ -20,7 +20,7 @@ class CommandDesigner::GlobalContext
     @filters.store(options, &block)
   end
 
-  def group(options, &block)
+  def in_context(options, &block)
     self.class.new(@filters, @context, options).tap(&block)
   end
 
