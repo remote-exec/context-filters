@@ -4,30 +4,9 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "command-designer/filters"
+require "command-designer/global_context"
+require "command-designer/local_context"
 
-class CommandDesigner::Context
-
-  attr_reader :context
-  attr_reader :filters
-
-  def initialize(filters = nil, context = [], options = nil)
-    @filters = filters || CommandDesigner::Filters.new
-    @context = context.dup + [options]
-  end
-
-  def filter(options = nil, &block)
-    @filters.store(options, &block)
-  end
-
-  def group(options, &block)
-    self.class.new(@filters, @context, options).tap(&block)
-  end
-
-  def evaluate_filters(method)
-    @context.each do |options|
-      @filters.apply(method, options)
-    end unless @filters.empty?
-  end
-
+class CommandDesigner::Context < CommandDesigner::GlobalContext
+  extend CommandDesigner::LocalContext
 end
