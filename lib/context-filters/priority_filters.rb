@@ -9,6 +9,7 @@ require "context-filters/filters"
 # list of +filters+ sorted by +priorities+
 class ContextFilters::PriorityFilters
 
+  # @return [Array] list of priorities this object was initialized with
   attr_reader :priorities
 
   # initializes priorities and coresponding list of filters
