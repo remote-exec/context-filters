@@ -9,25 +9,25 @@ require "command-designer/filters"
 class CommandDesigner::GlobalContext
 
   attr_reader :context
-  attr_reader :global_filters
+  attr_reader :filters
 
-  def initialize(global_filters = nil, context = [], options = nil)
-    @global_filters = global_filters || CommandDesigner::Filters.new
+  def initialize(filters = nil, context = [], options = nil)
+    @filters = filters || CommandDesigner::Filters.new
     @context = context.dup + [options]
   end
 
-  def global_filter(options = nil, &block)
-    @global_filters.store(options, &block)
+  def filter(options = nil, &block)
+    @filters.store(options, &block)
   end
 
   def group(options, &block)
-    self.class.new(@global_filters, @context, options).tap(&block)
+    self.class.new(@filters, @context, options).tap(&block)
   end
 
   def evaluate_filters(method)
     @context.each do |options|
-      @global_filters.apply(method, options)
-    end unless @global_filters.empty?
+      @filters.apply(method, options)
+    end unless @filters.empty?
   end
 
 end

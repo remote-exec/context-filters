@@ -18,8 +18,7 @@ module CommandDesigner::LocalContext
     nil
   end
 
-  def evaluate_filters(method)
-    super
+  def evaluate_local_filters(method)
     local_filters.each { |filter| filter.call(method) }
   end
 
