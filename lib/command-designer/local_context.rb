@@ -6,8 +6,10 @@ See the file LICENSE for copying permission.
 
 require "command-designer/version"
 
+# allow defining local filters and evaluating code in context of thems
 module CommandDesigner::LocalContext
 
+  # @returns [Array<Proc>] list of blocks to evaluate
   def local_filters
     @local_filters ||= []
   end
@@ -21,7 +23,7 @@ module CommandDesigner::LocalContext
   end
 
   def evaluate_local_filters(method)
-    local_filters.each { |filter| filter.call(&method) }
+    local_filters.each { |block| method.call(&block) }
   end
 
 end

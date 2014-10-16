@@ -39,18 +39,19 @@ describe CommandDesigner::Context do
     end
 
     it "does apply local filters" do
-      subject.stubs(:local_filters).returns([change_method])
-      subject.evaluate_filters(Proc.new{|value| value+4})
+      subject.stubs(:local_filters).returns([Proc.new{|value| value+4}])
+      subject.evaluate_filters(change_method)
       filter_test_subject.value.must_equal(7)
     end
 
     it "does apple global and local filters" do
-      method = Proc.new { |value| value+4 }
-      subject.stubs(:local_filters).returns([change_method])
-      subject.filter(:b) { true }
-      subject.filters.expects(:apply).once.with(method, nil)
-      subject.evaluate_filters(method)
-      filter_test_subject.value.must_equal(7)
+      addition       = Proc.new { |value| value+1 }
+      multiplication = Proc.new { |value| value*3 }
+      subject.filter(&multiplication)
+      subject.local_filter(addition) do
+        subject.evaluate_filters(change_method)
+      end
+      filter_test_subject.value.must_equal(10)
     end
 
   end #evaluate_command

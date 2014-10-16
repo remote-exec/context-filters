@@ -35,8 +35,8 @@ describe CommandDesigner::LocalContext do
 
   it "runs change" do
     method = Proc.new { |value| value+4 }
-    subject.stubs(:local_filters).returns([change_method])
-    subject.evaluate_local_filters(method)
+    subject.stubs(:local_filters).returns([method])
+    subject.evaluate_local_filters(change_method)
     filter_test_subject.value.must_equal(7)
   end
 
