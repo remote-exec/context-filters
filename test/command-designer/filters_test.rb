@@ -6,16 +6,7 @@ See the file LICENSE for copying permission.
 
 require "test_helper"
 require "command-designer/filters"
-
-class FiltersTestSubject
-  attr_reader :value
-  def initialize(value)
-    @value = value
-  end
-  def change(&block)
-    @value = block.call(@value)
-  end
-end
+require "command-designer/filter_test_subject"
 
 describe CommandDesigner::Filters do
 
@@ -62,7 +53,7 @@ describe CommandDesigner::Filters do
   describe "#apply" do
 
     let(:apply_test_subject) do
-      FiltersTestSubject.new("test me")
+      FilterTestSubject.new("test me")
     end
 
     it "does not apply filter" do

@@ -8,6 +8,7 @@ require "test_helper"
 require "command-designer/global_context"
 
 describe CommandDesigner::GlobalContext do
+
   subject do
     CommandDesigner::GlobalContext.new
   end

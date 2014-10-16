@@ -4,6 +4,8 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
+require "command-designer/version"
+
 module CommandDesigner::LocalContext
 
   def local_filters
@@ -19,7 +21,7 @@ module CommandDesigner::LocalContext
   end
 
   def evaluate_local_filters(method)
-    local_filters.each { |filter| filter.call(method) }
+    local_filters.each { |filter| filter.call(&method) }
   end
 
 end
