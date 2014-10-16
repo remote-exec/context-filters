@@ -63,11 +63,15 @@ end
 Now the real example:
 
 ```ruby
-addition       = Proc.new { |value| value+1 } # define filter that adds one to our number
-multiplication = Proc.new { |value| value*3 } # define filter that multiplies our number by three
+# define filter that adds one to our number
+addition       = Proc.new { |value| value+1 }
+# define filter that multiplies our number by three
+multiplication = Proc.new { |value| value*3 }
 
-subject.filter(nil,&multiplication) # use the multiplication filter globally (the nil scope is the initial context)
-subject.local_filter(addition) do   # use addition filter only in the scope of the given block
+# use the multiplication filter globally (the nil scope is the initial context)
+subject.filter(nil,&multiplication)
+# use addition filter only in the scope of the given block
+subject.local_filter(addition) do
 
   # usually you would extend Context and provide a helper method to do the following:
   # build the object we want to filter
