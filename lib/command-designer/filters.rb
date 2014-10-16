@@ -39,9 +39,9 @@ class CommandDesigner::Filters
 
   # stores the block for given options, if the options have a block
   # already the new one is added to the list
-  # @param options [Hash,nil] options for filtering blocks
-  # @param block   [Proc]     block of code to add to the list of blocks
-  #                           for this options
+  # @param options [Object] options for filtering blocks
+  # @param block   [Proc]   block of code to add to the list of blocks
+  #                         for this options
   def store(options = nil, &block)
     @filters[options] ||= []
     @filters[options] << block
@@ -50,7 +50,7 @@ class CommandDesigner::Filters
   # applies matching filters to the given method
   # @param method  [Method] an object method that takes a transformation
   #                         block as param
-  # @param options [Hash]   a filter for selecting matching blocks
+  # @param options [Object] a filter for selecting matching blocks
   def apply(method, options = {})
     @filters.fetch(options, []).each{|block| method.call(&block) }
   end
@@ -58,6 +58,11 @@ class CommandDesigner::Filters
   # Array of already defined filters
   def filters
     @filters.keys
+  end
+
+  # @returns [Boolean] true if there are any rules stored, false otherwise
+  def empty?
+    @filters.empty?
   end
 
 end
