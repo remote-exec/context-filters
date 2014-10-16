@@ -22,9 +22,65 @@ system, allows:
 4. priority based applying of global filters with mixed in local filtering
 5. no assumptions in the usage or context/filter format
 
-## Filters
+## ContextFilters::Context
 
-`CommandDesigner::Filters` allows storing and applying filters,
-the filters can be anything, most convienient an object instance or
-hash of options.
+This is the main class, it provides DSL methods to build nestable
+context, global and local filters and to execute filters depending on
+context.
 
+### DSL Methods
+
+- `initialize(priorities_array)` - sets up initial context, execute all
+  methods on this instance
+- `filter(priority, options) { code }` - create priority based filter
+  for given options with the code bloc to execute
+- `local_filter(filter_block) { code }` - define local `filter_block` to
+  take effect for the given `code` block, it's tricky as it takes two
+  lambdas, try: `local_filter(Proc.new{|cmd| "cd path && #{cmd}"}) { code }`
+- `in_context(options) { code }` - build new context, options are for
+  matching filters, all code will be executes in context of given options
+- `evaluate_filters(method)` - evaluate global and local filters in the
+  order of given priority, local filters are called after the `nil`
+  priority, try priorities: `[:first, nil, :last]`
+
+### Example
+
+On The beginning we need object that can apply multiple filters on
+itself, we will use the method `change` for that:
+```ruby
+# test/context-filters/filter_test_subject.rb
+class FilterTestSubject
+  attr_accessor :value
+  def initialize(value)
+    @value = value
+  end
+  def change(&block)
+    @value = block.call(@value)
+  end
+end
+```
+
+Now the real example:
+
+```ruby
+addition       = Proc.new { |value| value+1 } # define filter that adds one to our number
+multiplication = Proc.new { |value| value*3 } # define filter that multiplies our number by three
+
+subject.filter(nil,&multiplication) # use the multiplication filter globally (the nil scope is the initial context)
+subject.local_filter(addition) do   # use addition filter only in the scope of the given block
+
+  # usually you would extend Context and provide a helper method to do the following:
+  # build the object we want to filter
+  filter_test_subject = FilterTestSubject.new(3)
+  # apply matching filters to the object
+  subject.evaluate_filters(filter_test_subject.method(:change))
+  # get the result from object
+  puts filter_test_subject.value
+  # => 10
+
+end
+```
+
+This should be it, for real life example check:
+
+- https://github.com/remote-exec/command-designer

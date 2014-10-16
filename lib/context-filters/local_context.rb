@@ -10,6 +10,7 @@ require "context-filters/version"
 module ContextFilters::LocalContext
 
   # @return [Array<Proc>] list of blocks to evaluate
+  # @api private
   def local_filters
     @local_filters ||= []
   end
@@ -32,6 +33,7 @@ module ContextFilters::LocalContext
   #
   # @param method [Proc] a method to call with each filter stored in
   #                      +local_filters+
+  # @api private
   def evaluate_local_filters(method)
     local_filters.each { |block| method.call(&block) }
   end

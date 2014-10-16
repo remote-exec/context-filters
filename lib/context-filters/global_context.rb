@@ -11,9 +11,11 @@ require "context-filters/priority_filters"
 class ContextFilters::GlobalContext
 
   # @return [Array] the context stack
+  # @api private
   attr_reader :context
 
   # @return [PriorityFilters] shared list of filters
+  # @api private
   attr_reader :priority_filters
 
   # initialize new GlobalContext, works in two modes:
