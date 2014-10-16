@@ -9,7 +9,7 @@ require "command-designer/version"
 # allow defining local filters and evaluating code in context of thems
 module CommandDesigner::LocalContext
 
-  # @returns [Array<Proc>] list of blocks to evaluate
+  # @return [Array<Proc>] list of blocks to evaluate
   def local_filters
     @local_filters ||= []
   end
@@ -18,7 +18,7 @@ module CommandDesigner::LocalContext
   # yields given block of code
   #
   # @param filter_block [Proc] a block of code to add to the list
-  # @yields a block in which +local_filters+ temporarly includes
+  # @yield a block in which +local_filters+ temporarly includes
   #         +filter_block+
   def local_filter(filter_block, &block)
     local_filters.push(filter_block)

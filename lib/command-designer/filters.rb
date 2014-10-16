@@ -60,7 +60,7 @@ class CommandDesigner::Filters
     @filters.keys
   end
 
-  # @returns [Boolean] true if there are any rules stored, false otherwise
+  # @return [Boolean] true if there are any rules stored, false otherwise
   def empty?
     @filters.empty?
   end

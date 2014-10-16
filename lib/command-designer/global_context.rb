@@ -28,12 +28,19 @@ class CommandDesigner::GlobalContext
   end
 
   def evaluate_filters(method)
-    @priority_filters.each do |filters|
+    local_called = false
+    @priority_filters.each do |priority, filters|
       @context.each do |options|
         filters.apply(method, options)
       end
+      if priority.nil? && !local_called
+        yield if block_given?
+        local_called = true
+      end
     end unless @priority_filters.empty?
-    yield if block_given?
+    if !local_called
+      yield if block_given?
+    end
   end
 
 end

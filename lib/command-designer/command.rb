@@ -35,7 +35,7 @@ class CommandDesigner::Command
   end
 
   # Yields a block to change the command_name
-  # @yields     [command_name] a block to change the command
+  # @yield      [command_name] a block to change the command
   # @yieldparam command_name [String] the current command
   # @return     [String] the new command
   def change(&block)

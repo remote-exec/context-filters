@@ -33,8 +33,8 @@ describe CommandDesigner::Context do
       method = Proc.new{}
       subject.context << :a
       subject.filter(nil, :b) { true }
-      subject.priority_filters.filters_hash.fetch(nil).expects(:apply).once.with(method, nil)
-      subject.priority_filters.filters_hash.fetch(nil).expects(:apply).once.with(method, :a)
+      subject.priority_filters.to_a[0][1].expects(:apply).once.with(method, nil)
+      subject.priority_filters.to_a[0][1].expects(:apply).once.with(method, :a)
       subject.evaluate_filters(method)
     end
 

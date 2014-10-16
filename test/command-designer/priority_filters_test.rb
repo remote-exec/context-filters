@@ -30,12 +30,12 @@ describe CommandDesigner::PriorityFilters do
       subject.priorities.must_equal([:a, nil, :b])
     end
 
-    it "initializes filters_hash" do
+    it "initializes to_a" do
       subject.send(:initialize, [:a, :b])
-      subject.filters_hash.size.must_equal(2)
-      subject.filters_hash.keys.must_equal([:a, :b])
-      subject.filters_hash.values[0].must_be_kind_of CommandDesigner::Filters
-      subject.filters_hash.values[1].must_be_kind_of CommandDesigner::Filters
+      subject.to_a.size.must_equal(2)
+      subject.to_a.map(&:first).must_equal([:a, :b])
+      subject.to_a[0][1].must_be_kind_of CommandDesigner::Filters
+      subject.to_a[1][1].must_be_kind_of CommandDesigner::Filters
     end
 
   end #initialize
@@ -45,7 +45,7 @@ describe CommandDesigner::PriorityFilters do
     it "stores filters" do
       subject.send(:initialize, :a)
       subject.store(:a, :options) {true}
-      subject.filters_hash.values[0].filters.must_equal([:options])
+      subject.to_a[0][1].filters.must_equal([:options])
     end
 
     it "throws exception on wrong priority" do
@@ -57,9 +57,9 @@ describe CommandDesigner::PriorityFilters do
 
   end
 
-  it "sorts list in to_a" do
+  it "returns list in to_a" do
     subject.send(:initialize, [2, 1])
-    subject.to_a.map(&:object_id).must_equal(subject.filters_hash.each_pair.sort.map{|key, value| value.object_id})
+    subject.to_a.must_be_kind_of Array
   end
 
 end

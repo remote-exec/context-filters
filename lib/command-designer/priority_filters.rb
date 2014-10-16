@@ -9,18 +9,13 @@ require "command-designer/filters"
 # list of +filters+ sorted by +priorities+
 class CommandDesigner::PriorityFilters
 
-  # list of priorities for ordering objects
   attr_reader :priorities
 
-  # internal list of filters
-  # @api private
-  attr_reader :filters_hash
-
   # initializes priorities and coresponding list of filters
-  # @param priorities [Array] a list of priorities to order filters
+  # @param priorities [Array|Object] a list of priorities to order filters
   def initialize(priorities = nil)
-    @priorities   = [priorities].flatten
-    @filters_hash = Hash[@priorities.product([CommandDesigner::Filters.new])]
+    @priorities = [priorities].flatten.freeze
+    @filters_array = @priorities.product([CommandDesigner::Filters.new])
   end
 
   # adds a priority filter
@@ -28,26 +23,30 @@ class CommandDesigner::PriorityFilters
   # @param priority [Object]   anything that was part of +priorities+ array
   # @param options  [Object]   forwarded to Filters.store
   # @param block    [Proc]     forwarded to Filters.store
-  # @raises         [KeyError] when priority not matching priorities is used
+  # @raise          [KeyError] when priority not matching priorities is used
   def store(priority, options = nil, &block)
-    @filters_hash.fetch(priority).store(options, &block)
+    found = @filters_array.assoc(priority)
+    raise KeyError if found.nil?
+    found.last.store(options, &block)
   end
 
   # list of +filters+ sorted by +priorities+
   def to_a
-    @filters_hash.values_at(*priorities)
+    @filters_array
   end
 
   # iterate over +filters+ ordered by +priority+
-  # @yields [Filters] the next filters from sorted array
+  # @yield [priority,filters] the next filters from sorted array
+  # @yieldparam priority [Object]  the priority
+  # @yieldparam filters  [Filters] the filters for priority
   def each(&block)
     to_a.each(&block)
   end
 
   # check if all of the filters are empty
-  # returns [Bolean] true if all filters are empty
+  # return [Bolean] true if all filters are empty
   def empty?
-    @filters_hash.values.all?(&:empty?)
+    @filters_array.map(&:last).all?(&:empty?)
   end
 
 end
