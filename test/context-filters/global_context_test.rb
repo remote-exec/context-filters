@@ -49,6 +49,25 @@ describe ContextFilters::GlobalContext do
       subject.evaluate_filters(filter_test_subject, :change)
     end
 
+    it "does apply targeted filters in top context" do
+      addition       = Proc.new { |value| value+1 }
+      multiplication = Proc.new { |value| value*3 }
+      subject.filter(nil, {:target => filter_test_subject}, &addition)
+      subject.filter(nil, {:target => nil}, &multiplication)
+      subject.evaluate_filters(filter_test_subject, :change)
+      filter_test_subject.value.must_equal(4)
+    end
+
+    it "does apply targeted filters in sub context" do
+      addition       = Proc.new { |value| value+1 }
+      multiplication = Proc.new { |value| value*3 }
+      subject.context << { :a => 1 }
+      subject.filter(nil, {:a => 1, :target => filter_test_subject}, &addition)
+      subject.filter(nil, {:a => 1, :target => nil}, &multiplication)
+      subject.evaluate_filters(filter_test_subject, :change)
+      filter_test_subject.value.must_equal(4)
+    end
+
   end #evaluate_command
 
   describe "#group" do
