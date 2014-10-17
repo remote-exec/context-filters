@@ -63,8 +63,16 @@ class ContextFilters::Filters
   # @param options [Object] a filter for selecting matching blocks
   def select_filters(target, options)
     found = @filters.fetch(options, [])
-    if   Hash === options || options.nil?
-    then found += @filters.fetch((options||{}).merge(:target => target), [])
+    if
+      Hash === options || options.nil?
+    then
+      options ||={}
+      options.merge!(:target => target)
+      found +=
+      # can not @filters.fetch(options, []) to allow filters provide custom ==()
+      @filters.select do |filter_options, filters|
+        options == filter_options
+      end.map(&:last).flatten
     end
     found
   end
