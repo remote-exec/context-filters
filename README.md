@@ -39,8 +39,8 @@ context.
   lambdas, try: `local_filter(Proc.new{|cmd| "cd path && #{cmd}"}) { code }`
 - `in_context(options) { code }` - build new context, options are for
   matching filters, all code will be executes in context of given options
-- `evaluate_filters(method)` - evaluate global and local filters in the
-  order of given priority, local filters are called after the `nil`
+- `evaluate_filters(target, method)` - evaluate global and local filters
+  in the order of given priority, local filters are called after the `nil`
   priority, try priorities: `[:first, nil, :last]`
 
 ### Example
@@ -81,7 +81,7 @@ subject.local_filter(addition) do
   # build the object we want to filter
   filter_test_subject = FilterTestSubject.new(3)
   # apply matching filters to the object
-  subject.evaluate_filters(filter_test_subject.method(:change))
+  subject.evaluate_filters(filter_test_subject, :change)
   # get the result from object
   puts filter_test_subject.value
   # => 10
