@@ -12,7 +12,7 @@ class ContextFilters::GlobalContext
 
   # @return [Array] the context stack
   # @api private
-  attr_reader :context
+  attr_reader :context_stack
 
   # @return [PriorityFilters] shared list of filters
   # @api private
@@ -26,15 +26,15 @@ class ContextFilters::GlobalContext
   #
   # @param priority_filters [Array,PriorityFilters] when PriorityFilters - uses it for priority_filters
   #                                                 otherwise - initializes new priority_filters with it
-  # @param context [Array]  parents context, duplicates to initialize own context
-  # @param options [Object] new context, ads it to current context
+  # @param context_stack    [Array]  parents context_stack, duplicates to initialize own context_stack
+  # @param options          [Object] new context, ads it to context_stack
   #
-  def initialize(priority_filters = nil, context = [], options = nil)
+  def initialize(priority_filters = nil, context_stack = [], options = nil)
     if ContextFilters::PriorityFilters === priority_filters
     then @priority_filters = priority_filters
     else @priority_filters = ContextFilters::PriorityFilters.new(priority_filters)
     end
-    @context = context.dup + [options]
+    @context_stack = context_stack.dup + [options]
   end
 
   # defines new filter for given +priority+ and +options+
@@ -51,12 +51,13 @@ class ContextFilters::GlobalContext
   # @param options [Object] options to start new context
   # @param block   [Proc]   code block that will enable filtering for the given +options+
   # @yield         [GlobalContext] the new context
-  def in_context(options, &block)
-    self.class.new(@priority_filters, @context, options).tap(&block)
+  def context(options, &block)
+    self.class.new(@priority_filters, @context_stack, options).tap(&block)
   end
 
-  # evaluates all matching filters for given context, allows to do extra
+  # evaluates all matching filters for given context_stack, allows to do extra
   # work for +priority.nil?+ or on the end of the priorities,
+  #
   # @param method [Proc] the method to evaluate with filters matching current context
   # @yield on first +priority.nil?+ or on the end when none
   def evaluate_filters(target, method)
@@ -64,7 +65,7 @@ class ContextFilters::GlobalContext
 
     @priority_filters.each do |priority, filters|
 
-      @context.each { |options| filters.apply(target, method, options) }
+      @context_stack.each { |options| filters.apply(target, method, options) }
 
       if priority.nil? && block_given? && !local_called
         yield

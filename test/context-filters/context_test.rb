@@ -26,7 +26,7 @@ describe ContextFilters::Context do
     end
 
     it "does apply global filters" do
-      subject.context << :a
+      subject.context_stack << :a
       subject.filter(nil, :b) { true }
       subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, nil)
       subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, :a)

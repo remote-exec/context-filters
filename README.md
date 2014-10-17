@@ -30,14 +30,14 @@ context.
 
 ### DSL Methods
 
-- `initialize(priorities_array)` - sets up initial context, execute all
-  methods on this instance
+- `initialize(priorities_array)` - sets up initial context (+nil+),
+  execute all methods on this instance
 - `filter(priority, options) { code }` - create priority based filter
   for given options with the code bloc to execute
 - `local_filter(filter_block) { code }` - define local `filter_block` to
   take effect for the given `code` block, it's tricky as it takes two
   lambdas, try: `local_filter(Proc.new{|cmd| "cd path && #{cmd}"}) { code }`
-- `in_context(options) { code }` - build new context, options are for
+- `context(options) { code }` - build new context, options are for
   matching filters, all code will be executes in context of given options
 - `evaluate_filters(target, method)` - evaluate global and local filters
   in the order of given priority, local filters are called after the `nil`

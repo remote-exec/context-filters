@@ -23,7 +23,7 @@ describe ContextFilters::GlobalContext do
     it "sets up initial variables" do
       subject.priority_filters.must_be_kind_of ContextFilters::PriorityFilters
       subject.priority_filters.must_be_empty
-      subject.context.must_equal([nil])
+      subject.context_stack.must_equal([nil])
     end
 
   end #initialize
@@ -42,7 +42,7 @@ describe ContextFilters::GlobalContext do
 
     it "does apply filters" do
       method = Proc.new{}
-      subject.context << :a
+      subject.context_stack << :a
       subject.filter(nil, :b) { true }
       subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, nil)
       subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, :a)
@@ -61,7 +61,7 @@ describe ContextFilters::GlobalContext do
     it "does apply targeted filters in sub context" do
       addition       = Proc.new { |value| value+1 }
       multiplication = Proc.new { |value| value*3 }
-      subject.context << { :a => 1 }
+      subject.context_stack << { :a => 1 }
       subject.filter(nil, {:a => 1, :target => filter_test_subject}, &addition)
       subject.filter(nil, {:a => 1, :target => nil}, &multiplication)
       subject.evaluate_filters(filter_test_subject, :change)
@@ -73,23 +73,23 @@ describe ContextFilters::GlobalContext do
   describe "#group" do
 
     it "nests" do
-      subject.in_context(:a) do |test_a|
+      subject.context(:a) do |test_a|
 
         test_a.must_be_kind_of ContextFilters::GlobalContext
         test_a.priority_filters.object_id.must_equal(subject.priority_filters.object_id)
-        test_a.context.object_id.wont_equal(subject.context.object_id)
-        test_a.context.must_equal([nil, :a])
+        test_a.context_stack.object_id.wont_equal(subject.context_stack.object_id)
+        test_a.context_stack.must_equal([nil, :a])
 
-        test_a.in_context(:b) do |test_b|
+        test_a.context(:b) do |test_b|
           test_b.must_be_kind_of ContextFilters::GlobalContext
           test_b.priority_filters.object_id.must_equal(test_a.priority_filters.object_id)
-          test_b.context.object_id.wont_equal(test_a.context.object_id)
-          test_b.context.must_equal([nil, :a, :b])
+          test_b.context_stack.object_id.wont_equal(test_a.context_stack.object_id)
+          test_b.context_stack.must_equal([nil, :a, :b])
         end
 
-        test_a.context.must_equal([nil, :a])
+        test_a.context_stack.must_equal([nil, :a])
       end
-      subject.context.must_equal([nil])
+      subject.context_stack.must_equal([nil])
     end
 
   end #group
