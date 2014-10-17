@@ -6,11 +6,16 @@ See the file LICENSE for copying permission.
 
 require "test_helper"
 require "context-filters/global_context"
+require "context-filters/filter_test_subject"
 
 describe ContextFilters::GlobalContext do
 
   subject do
     ContextFilters::GlobalContext.new
+  end
+
+  let(:filter_test_subject) do
+    FilterTestSubject.new(3)
   end
 
   describe "#initialize" do
@@ -32,16 +37,16 @@ describe ContextFilters::GlobalContext do
 
     it "does not apply filters when no filters" do
       subject.priority_filters.expects(:apply).never
-      subject.evaluate_filters(Proc.new{})
+      subject.evaluate_filters(filter_test_subject, :change)
     end
 
     it "does apply filters" do
       method = Proc.new{}
       subject.context << :a
       subject.filter(nil, :b) { true }
-      subject.priority_filters.to_a[0][1].expects(:apply).once.with(method, nil)
-      subject.priority_filters.to_a[0][1].expects(:apply).once.with(method, :a)
-      subject.evaluate_filters(method)
+      subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, nil)
+      subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, :a)
+      subject.evaluate_filters(filter_test_subject, :change)
     end
 
   end #evaluate_command

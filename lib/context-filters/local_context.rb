@@ -34,8 +34,8 @@ module ContextFilters::LocalContext
   # @param method [Proc] a method to call with each filter stored in
   #                      +local_filters+
   # @api private
-  def evaluate_local_filters(method)
-    local_filters.each { |block| method.call(&block) }
+  def evaluate_local_filters(target, method)
+    local_filters.each { |block| target.send(method, &block) }
   end
 
 end

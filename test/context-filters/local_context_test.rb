@@ -18,15 +18,12 @@ describe ContextFilters::LocalContext do
     FilterTestSubject.new(3)
   end
 
-  let(:change_method) do
-    filter_test_subject.method(:change)
-  end
-
   it "has default value for #local_filters" do
     subject.local_filters.must_equal([])
   end
 
   it "adds local filters" do
+    change_method = Proc.new {}
     subject.local_filter(change_method) do
       subject.local_filters.must_equal([change_method])
     end
@@ -36,7 +33,7 @@ describe ContextFilters::LocalContext do
   it "runs change" do
     method = Proc.new { |value| value+4 }
     subject.stubs(:local_filters).returns([method])
-    subject.evaluate_local_filters(change_method)
+    subject.evaluate_local_filters(filter_test_subject, :change)
     filter_test_subject.value.must_equal(7)
   end
 

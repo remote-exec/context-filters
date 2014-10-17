@@ -18,29 +18,24 @@ describe ContextFilters::Context do
     FilterTestSubject.new(3)
   end
 
-  let(:change_method) do
-    filter_test_subject.method(:change)
-  end
-
   describe "#evaluate_filters" do
 
     it "does not apply filters when no filters" do
       subject.priority_filters.expects(:apply).never
-      subject.evaluate_filters(Proc.new{})
+      subject.evaluate_filters(filter_test_subject, :change)
     end
 
     it "does apply global filters" do
-      method = Proc.new{}
       subject.context << :a
       subject.filter(nil, :b) { true }
-      subject.priority_filters.to_a[0][1].expects(:apply).once.with(method, nil)
-      subject.priority_filters.to_a[0][1].expects(:apply).once.with(method, :a)
-      subject.evaluate_filters(method)
+      subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, nil)
+      subject.priority_filters.to_a[0][1].expects(:apply).once.with(filter_test_subject, :change, :a)
+      subject.evaluate_filters(filter_test_subject, :change)
     end
 
     it "does apply local filters" do
       subject.stubs(:local_filters).returns([Proc.new{|value| value+4}])
-      subject.evaluate_filters(change_method)
+      subject.evaluate_filters(filter_test_subject, :change)
       filter_test_subject.value.must_equal(7)
     end
 
@@ -51,7 +46,7 @@ describe ContextFilters::Context do
 
       subject.filter(nil,&multiplication)
       subject.local_filter(addition) do
-        subject.evaluate_filters(change_method)
+        subject.evaluate_filters(filter_test_subject, :change)
       end
 
       filter_test_subject.value.must_equal(10)

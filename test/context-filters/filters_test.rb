@@ -59,7 +59,7 @@ describe ContextFilters::Filters do
     it "does not apply filter" do
       subject.store({x: 1}) { |value| "better #{value}" }
 
-      subject.apply(apply_test_subject.method(:change), {x: 2})
+      subject.apply(apply_test_subject, :change, {x: 2})
 
       apply_test_subject.value.must_equal("test me")
     end
@@ -67,7 +67,7 @@ describe ContextFilters::Filters do
     it "applies single filter" do
       subject.store({x: 1}) { |value| "better #{value}" }
 
-      subject.apply(apply_test_subject.method(:change), {x: 1})
+      subject.apply(apply_test_subject, :change, {x: 1})
 
       apply_test_subject.value.must_equal("better test me")
     end
@@ -77,7 +77,7 @@ describe ContextFilters::Filters do
       subject.store({x: 1}) { |value| "#{value} please" }
       subject.store({x: 1}) { |value| "#{value}!" }
 
-      subject.apply(apply_test_subject.method(:change), {x: 1})
+      subject.apply(apply_test_subject, :change, {x: 1})
 
       apply_test_subject.value.must_equal("better test me please!")
     end
@@ -86,10 +86,20 @@ describe ContextFilters::Filters do
       subject.store({x: 1}) { |value| "dont #{value}" }
       subject.store({x: 2}) { |value| "#{value} now" }
 
-      subject.apply(apply_test_subject.method(:change), {x: 1})
-      subject.apply(apply_test_subject.method(:change), {x: 2})
+      subject.apply(apply_test_subject, :change, {x: 1})
+      subject.apply(apply_test_subject, :change, {x: 2})
 
       apply_test_subject.value.must_equal("dont test me now")
+    end
+
+    it "applies only one target filter" do
+      subject.store({x: 1, target: apply_test_subject}) { |value| "dont #{value}" }
+      subject.store({x: 2, target: nil}) { |value| "#{value} now" }
+
+      subject.apply(apply_test_subject, :change, {x: 1})
+      subject.apply(apply_test_subject, :change, {x: 2})
+
+      apply_test_subject.value.must_equal("dont test me")
     end
 
   end #apply

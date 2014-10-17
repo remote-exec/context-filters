@@ -47,12 +47,26 @@ class ContextFilters::Filters
     @filters[options] << block
   end
 
-  # applies matching filters to the given method
-  # @param method  [Method] an object method that takes a transformation
+  # applies matching filters to the given target method, also uses
+  # filters matching extra +:target => target+ when options is a Hash
+  # @param target  [Object] an object to run the method on
+  # @param method  [symbol] method name that takes a transformation
   #                         block as param
   # @param options [Object] a filter for selecting matching blocks
-  def apply(method, options = {})
-    @filters.fetch(options, []).each{|block| method.call(&block) }
+  def apply(target, method, options = nil)
+    select_filters(target, options).each{|block| target.send(method, &block) }
+  end
+
+  # Select matching filters and filters including targets when
+  # options is a +Hash+
+  # @param target  [Object] an object to run the method on
+  # @param options [Object] a filter for selecting matching blocks
+  def select_filters(target, options)
+    found = @filters.fetch(options, [])
+    if   Hash === options
+    then found += @filters.fetch(options.merge(:target => target), [])
+    end
+    found
   end
 
   # Array of already defined filters

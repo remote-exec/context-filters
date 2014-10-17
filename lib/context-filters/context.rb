@@ -15,9 +15,9 @@ class ContextFilters::Context < ContextFilters::GlobalContext
 
   # run the given method on global and local filters
   # @param method [Proc] the method to evaluate for filters matching context
-  def evaluate_filters(method)
-    super(method) do
-      evaluate_local_filters(method)
+  def evaluate_filters(target, method)
+    super(target, method) do
+      evaluate_local_filters(target, method)
     end
   end
 

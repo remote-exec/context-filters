@@ -59,12 +59,12 @@ class ContextFilters::GlobalContext
   # work for +priority.nil?+ or on the end of the priorities,
   # @param method [Proc] the method to evaluate with filters matching current context
   # @yield on first +priority.nil?+ or on the end when none
-  def evaluate_filters(method)
+  def evaluate_filters(target, method)
     local_called = false
 
     @priority_filters.each do |priority, filters|
 
-      @context.each { |options| filters.apply(method, options) }
+      @context.each { |options| filters.apply(target, method, options) }
 
       if priority.nil? && block_given? && !local_called
         yield
