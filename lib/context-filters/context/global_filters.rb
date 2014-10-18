@@ -4,7 +4,7 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "context-filters/priority_filters"
+require "context-filters/filters/priority_filters"
 
 class ContextFilters::Context
 
@@ -21,7 +21,7 @@ class ContextFilters::Context
     # @param priority_filters [Array] initialization param for PriorityFilters
     # @api private
     def initialize_priority_filters(priority_filters)
-      @priority_filters = ContextFilters::PriorityFilters.new(priority_filters)
+      @priority_filters = ContextFilters::Filters::PriorityFilters.new(priority_filters)
     end
 
     # defines new filter for given +priority+ and +options+

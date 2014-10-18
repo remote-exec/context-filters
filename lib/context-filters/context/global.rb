@@ -4,7 +4,6 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "context-filters/priority_filters"
 require "context-filters/context/global_context"
 require "context-filters/context/global_filters"
 

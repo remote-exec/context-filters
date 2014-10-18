@@ -14,7 +14,7 @@ describe ContextFilters::Context::GlobalFilters do
   end
 
   it "sets up empty initial variables" do
-    subject.priority_filters.must_be_kind_of ContextFilters::PriorityFilters
+    subject.priority_filters.must_be_kind_of ContextFilters::Filters::PriorityFilters
     subject.priority_filters.must_be_empty
   end
 

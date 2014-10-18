@@ -5,12 +5,12 @@ See the file LICENSE for copying permission.
 =end
 
 require "test_helper"
-require "context-filters/priority_filters"
+require "context-filters/filters/priority_filters"
 
-describe ContextFilters::PriorityFilters do
+describe ContextFilters::Filters::PriorityFilters do
 
   subject do
-    ContextFilters::PriorityFilters.allocate
+    ContextFilters::Filters::PriorityFilters.allocate
   end
 
   describe "#initialize" do
@@ -34,8 +34,8 @@ describe ContextFilters::PriorityFilters do
       subject.send(:initialize, [:a, :b])
       subject.to_a.size.must_equal(2)
       subject.to_a.map(&:first).must_equal([:a, :b])
-      subject.to_a[0][1].must_be_kind_of ContextFilters::Filters
-      subject.to_a[1][1].must_be_kind_of ContextFilters::Filters
+      subject.to_a[0][1].must_be_kind_of ContextFilters::Filters::Filters
+      subject.to_a[1][1].must_be_kind_of ContextFilters::Filters::Filters
     end
 
   end #initialize
