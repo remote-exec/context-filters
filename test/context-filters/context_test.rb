@@ -10,15 +10,34 @@ require "context-filters/filter_test_subject"
 
 describe ContextFilters::Context do
 
-  subject do
-    ContextFilters::Context.new
-  end
+  describe "#initialize" do
 
-  let(:filter_test_subject) do
-    FilterTestSubject.new(3)
-  end
+    subject do
+      ContextFilters::Context.allocate
+    end
+
+    it "initializes empty priority_filters" do
+      subject.send(:initialize)
+      subject.priority_filters.priorities.must_equal([nil])
+    end
+
+    it "initializes priority_filters with values" do
+      example = [:a, :b, :c]
+      subject.send(:initialize, example)
+      subject.priority_filters.priorities.must_equal(example)
+    end
+
+  end #initialize
 
   describe "#evaluate_filters" do
+
+    subject do
+      ContextFilters::Context.new
+    end
+
+    let(:filter_test_subject) do
+      FilterTestSubject.new(3)
+    end
 
     it "does not apply filters when no filters" do
       subject.priority_filters.expects(:apply).never
