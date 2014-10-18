@@ -15,6 +15,7 @@ class ContextFilters::Context
   include ContextFilters::Context::Local
 
   # sets up the priorities order for global context filters
+  # @param priority_filters [Array] initialization param for PriorityFilters
   def initialize(priority_filters = nil)
     initialize_priority_filters(priority_filters)
   end
