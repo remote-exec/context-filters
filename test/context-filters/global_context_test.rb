@@ -11,7 +11,7 @@ require "context-filters/filter_test_subject"
 describe ContextFilters::GlobalContext do
 
   subject do
-    ContextFilters::GlobalContext.new
+    Object.new.tap { |o| o.extend(ContextFilters::GlobalContext) }
   end
 
   let(:filter_test_subject) do
@@ -75,15 +75,11 @@ describe ContextFilters::GlobalContext do
     it "nests" do
       subject.context(:a) do |test_a|
 
-        test_a.must_be_kind_of ContextFilters::GlobalContext
-        test_a.priority_filters.object_id.must_equal(subject.priority_filters.object_id)
-        test_a.context_stack.object_id.wont_equal(subject.context_stack.object_id)
+        test_a.object_id.must_equal(subject.object_id)
         test_a.context_stack.must_equal([nil, :a])
 
         test_a.context(:b) do |test_b|
-          test_b.must_be_kind_of ContextFilters::GlobalContext
-          test_b.priority_filters.object_id.must_equal(test_a.priority_filters.object_id)
-          test_b.context_stack.object_id.wont_equal(test_a.context_stack.object_id)
+          test_b.object_id.must_equal(test_a.object_id)
           test_b.context_stack.must_equal([nil, :a, :b])
         end
 

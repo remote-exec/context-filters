@@ -8,33 +8,24 @@ require "context-filters/priority_filters"
 
 # builds list of filters and provides dsl for building nested context
 # and allows evaluating filters on methods in the current context
-class ContextFilters::GlobalContext
+module ContextFilters::GlobalContext
 
   # @return [Array] the context stack
   # @api private
-  attr_reader :context_stack
+  def context_stack
+    @context_stack ||= [nil]
+  end
 
   # @return [PriorityFilters] shared list of filters
   # @api private
-  attr_reader :priority_filters
+  def priority_filters
+    @priority_filters ||= initialize_priority_filters(nil)
+  end
 
-  # initialize new GlobalContext, works in two modes:
-  # 1. start totally new context, takes one param - array of priorities,
-  #    +nil+ to use one anonymous priority
-  # 2. build sub context, params: global_filters_list, parents_context,
-  #    value to add to context
-  #
-  # @param priority_filters [Array,PriorityFilters] when PriorityFilters - uses it for priority_filters
-  #                                                 otherwise - initializes new priority_filters with it
-  # @param context_stack    [Array]  parents context_stack, duplicates to initialize own context_stack
-  # @param options          [Object] new context, ads it to context_stack
-  #
-  def initialize(priority_filters = nil, context_stack = [], options = nil)
-    if ContextFilters::PriorityFilters === priority_filters
-    then @priority_filters = priority_filters
-    else @priority_filters = ContextFilters::PriorityFilters.new(priority_filters)
-    end
-    @context_stack = context_stack.dup + [options]
+  # sets up the priorities order for filters
+  # @param priority_filters [Array] initialization param for PriorityFilters
+  def initialize_priority_filters(priority_filters)
+    @priority_filters = ContextFilters::PriorityFilters.new(priority_filters)
   end
 
   # defines new filter for given +priority+ and +options+
@@ -44,15 +35,20 @@ class ContextFilters::GlobalContext
   # @param block    [Proc]        the transformation to use when the options match
   #
   def filter(priority, options = nil, &block)
-    @priority_filters.store(priority, options, &block)
+    priority_filters.store(priority, options, &block)
   end
 
   # starts new context
   # @param options [Object] options to start new context
   # @param block   [Proc]   code block that will enable filtering for the given +options+
-  # @yield         [GlobalContext] the new context
+  # @yield a block in which +context_stack+ temporarily includes +filter_block+
+  # @yieldparam    [self]   use it optionally to give a new name to the
+  #                         code evaluated in new context
   def context(options, &block)
-    self.class.new(@priority_filters, @context_stack, options).tap(&block)
+    context_stack.push(options)
+    yield(self)
+  ensure
+    context_stack.pop
   end
 
   # evaluates all matching filters for given context_stack, allows to do extra
@@ -63,9 +59,9 @@ class ContextFilters::GlobalContext
   def evaluate_filters(target, method)
     local_called = false
 
-    @priority_filters.each do |priority, filters|
+    priority_filters.each do |priority, filters|
 
-      @context_stack.each { |options| filters.apply(target, method, options) }
+      context_stack.each { |options| filters.apply(target, method, options) }
 
       if priority.nil? && block_given? && !local_called
         yield

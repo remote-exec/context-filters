@@ -9,9 +9,15 @@ require "context-filters/local_context"
 
 # manipulate set of context and filters for it,
 # allow evaluating filters in given context
-class ContextFilters::Context < ContextFilters::GlobalContext
+class ContextFilters::Context
 
+  include ContextFilters::GlobalContext
   include ContextFilters::LocalContext
+
+  # sets up the priorities order for filters
+  def initialize(priority_filters = nil)
+    initialize_priority_filters(priority_filters)
+  end
 
   # run the given method on global and local filters
   # @param method [Proc] the method to evaluate for filters matching context

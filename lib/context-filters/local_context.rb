@@ -19,14 +19,12 @@ module ContextFilters::LocalContext
   # yields given block of code
   #
   # @param filter_block [Proc] a block of code to add to the list
-  # @yield a block in which +local_filters+ temporarly includes
-  #         +filter_block+
+  # @yield a block in which +local_filters+ temporarily includes +filter_block+
   def local_filter(filter_block, &block)
     local_filters.push(filter_block)
     block.call
   ensure
     local_filters.pop
-    nil
   end
 
   # iterates over +local_filters+ and applies them to the given +method+
