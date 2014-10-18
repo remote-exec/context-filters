@@ -14,41 +14,6 @@ describe ContextFilters::Filters::Filters do
     ContextFilters::Filters::Filters.new
   end
 
-  describe "#store" do
-
-    it "adds empty filter" do
-      subject.store() { true }
-      subject.filters.size.must_equal 1
-      subject.filters.first.must_equal(nil)
-    end
-
-    it "adds options filter" do
-      subject.store(x: 2) { true }
-      subject.filters.size.must_equal 1
-      subject.filters.first.must_equal({x:2})
-    end
-
-    it "adds hash filter" do
-      subject.store({x: 3}) { true }
-      subject.filters.size.must_equal 1
-      subject.filters.first.must_equal({x:3})
-    end
-
-    it "adds nil filter" do
-      subject.store(nil) { true }
-      subject.filters.size.must_equal 1
-      subject.filters.first.must_equal(nil)
-    end
-
-    it "adds filter block" do
-      subject.store() { 4 }
-      subject.filters_store.size.must_equal 1
-      subject.filters_store[nil].size.must_equal 1
-      subject.filters_store[nil].first.call.must_equal(4)
-    end
-
-  end #store
-
   describe "#apply" do
 
     let(:apply_test_subject) do
