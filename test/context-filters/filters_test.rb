@@ -42,10 +42,9 @@ describe ContextFilters::Filters do
 
     it "adds filter block" do
       subject.store() { 4 }
-      filters = subject.instance_variable_get(:@filters)
-      filters.size.must_equal 1
-      filters[nil].size.must_equal 1
-      filters[nil].first.call.must_equal(4)
+      subject.filters_store.size.must_equal 1
+      subject.filters_store[nil].size.must_equal 1
+      subject.filters_store[nil].first.call.must_equal(4)
     end
 
   end #store

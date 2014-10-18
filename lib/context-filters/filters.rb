@@ -32,9 +32,10 @@ require "context-filters/version"
 
 class ContextFilters::Filters
 
-  # initialize the filters storage
-  def initialize
-    @filters = {}
+  # @return [Hash] the filters storage
+  # @api private
+  def filters_store
+    @filters_store ||= {}
   end
 
   # stores the block for given options, if the options have a block
@@ -43,8 +44,8 @@ class ContextFilters::Filters
   # @param block   [Proc]   block of code to add to the list of blocks
   #                         for this options
   def store(options = nil, &block)
-    @filters[options] ||= []
-    @filters[options] << block
+    filters_store[options] ||= []
+    filters_store[options] << block
   end
 
   # applies matching filters to the given target method, also uses
@@ -62,7 +63,7 @@ class ContextFilters::Filters
   # @param target  [Object] an object to run the method on
   # @param options [Object] a filter for selecting matching blocks
   def select_filters(target, options)
-    found = @filters.fetch(options, [])
+    found = filters_store.fetch(options, [])
     if
       Hash === options || options.nil?
     then
@@ -70,7 +71,7 @@ class ContextFilters::Filters
       options.merge!(:target => target)
       found +=
       # can not @filters.fetch(options, []) to allow filters provide custom ==()
-      @filters.select do |filter_options, filters|
+      filters_store.select do |filter_options, filters|
         options == filter_options
       end.map(&:last).flatten
     end
@@ -79,12 +80,12 @@ class ContextFilters::Filters
 
   # Array of already defined filters
   def filters
-    @filters.keys
+    filters_store.keys
   end
 
   # @return [Boolean] true if there are any rules stored, false otherwise
   def empty?
-    @filters.empty?
+    filters_store.empty?
   end
 
 end
