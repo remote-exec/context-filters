@@ -6,7 +6,7 @@ See the file LICENSE for copying permission.
 
 require "context-filters/priority_filters"
 require "context-filters/context/global_context"
-require "context-filters/context/global_priorities"
+require "context-filters/context/global_filters"
 
 class ContextFilters::Context
 
@@ -15,7 +15,7 @@ class ContextFilters::Context
   module Global
 
     include GlobalContext
-    include GlobalPriorities
+    include GlobalFilters
 
     # evaluates all matching filters for given context_stack, allows to do extra
     # work for +priority.nil?+ or on the end of the priorities,

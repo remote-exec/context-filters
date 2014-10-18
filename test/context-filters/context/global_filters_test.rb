@@ -5,12 +5,12 @@ See the file LICENSE for copying permission.
 =end
 
 require "test_helper"
-require "context-filters/context/global_priorities"
+require "context-filters/context/global_filters"
 
-describe ContextFilters::Context::Global do
+describe ContextFilters::Context::GlobalFilters do
 
   subject do
-    Object.new.tap { |o| o.extend(ContextFilters::Context::Global) }
+    Object.new.tap { |o| o.extend(ContextFilters::Context::GlobalFilters) }
   end
 
   it "sets up empty initial variables" do

@@ -9,7 +9,7 @@ require "context-filters/priority_filters"
 class ContextFilters::Context
 
   # simple access to global priority filters
-  module GlobalPriorities
+  module GlobalFilters
 
     # @return [PriorityFilters] shared list of filters
     # @api private
