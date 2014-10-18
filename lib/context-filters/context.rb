@@ -4,17 +4,17 @@ Copyright 2014 Michal Papis <mpapis@gmail.com>
 See the file LICENSE for copying permission.
 =end
 
-require "context-filters/global_context"
-require "context-filters/local_context"
+require "context-filters/context/global"
+require "context-filters/context/local"
 
 # manipulate set of context and filters for it,
 # allow evaluating filters in given context
 class ContextFilters::Context
 
-  include ContextFilters::GlobalContext
-  include ContextFilters::LocalContext
+  include ContextFilters::Context::Global
+  include ContextFilters::Context::Local
 
-  # sets up the priorities order for filters
+  # sets up the priorities order for global context filters
   def initialize(priority_filters = nil)
     initialize_priority_filters(priority_filters)
   end

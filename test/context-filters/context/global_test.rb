@@ -5,13 +5,13 @@ See the file LICENSE for copying permission.
 =end
 
 require "test_helper"
-require "context-filters/global_context"
+require "context-filters/context/global"
 require "context-filters/filter_test_subject"
 
-describe ContextFilters::GlobalContext do
+describe ContextFilters::Context::Global do
 
   subject do
-    Object.new.tap { |o| o.extend(ContextFilters::GlobalContext) }
+    Object.new.tap { |o| o.extend(ContextFilters::Context::Global) }
   end
 
   let(:filter_test_subject) do

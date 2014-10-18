@@ -5,13 +5,13 @@ See the file LICENSE for copying permission.
 =end
 
 require "test_helper"
-require "context-filters/local_context"
+require "context-filters/context/local"
 require "context-filters/filter_test_subject"
 
-describe ContextFilters::LocalContext do
+describe ContextFilters::Context::Local do
 
   subject do
-    Object.new.tap { |o| o.extend(ContextFilters::LocalContext) }
+    Object.new.tap { |o| o.extend(ContextFilters::Context::Local) }
   end
 
   let(:filter_test_subject) do
